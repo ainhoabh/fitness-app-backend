@@ -155,7 +155,7 @@ def get_exercises():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT exercises_name FROM exercises')
-    exercises = cursor.fetchall()
+    exercises = [{'exercises_name': row['exercises_name']} for row in cursor.fetchall()]
     cursor.close()
     conn.close()
     return jsonify(exercises)
