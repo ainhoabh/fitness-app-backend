@@ -143,7 +143,7 @@ def get_days():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT days_name FROM days')
-    days = [{'days_name': row['days_name']} for row in cursor.fetchall()]
+    days = cursor.fetchall()
     cursor.close()
     conn.close()
     return jsonify(days)
@@ -155,7 +155,7 @@ def get_exercises():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT exercises_name FROM exercises')
-    exercises = [{'exercises_name': row['exercises_name']} for row in cursor.fetchall()]
+    exercises = cursor.fetchall()
     cursor.close()
     conn.close()
     return jsonify(exercises)
