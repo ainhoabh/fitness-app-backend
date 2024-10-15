@@ -143,6 +143,10 @@ def get_days():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT days_name FROM days')
+    rows = cursor.fetchall()
+    for row in rows:
+        print(type(row))
+    print(rows)
     days = [row['days_name'] for row in cursor.fetchall()]
     cursor.close()
     conn.close()
