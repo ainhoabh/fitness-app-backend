@@ -26,7 +26,7 @@ jwt = JWTManager(app)
 
 db = SQLAlchemy(app)
 
-DATABASE = os.path.join(os.path.dirname(__file__), 'fitness.sqlite')
+DATABASE = 'fitness.sqlite'
 
 def get_db_connection():
     db = sqlite3.connect(DATABASE)
