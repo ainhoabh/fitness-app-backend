@@ -143,7 +143,7 @@ def get_days():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT days_name FROM days')
-    days = cursor.fetchall()
+    days = [{'days_name': row['days_name']} for row in cursor.fetchall()]
     cursor.close()
     conn.close()
     return jsonify(days)
