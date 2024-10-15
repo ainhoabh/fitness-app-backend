@@ -18,7 +18,7 @@ CORS(app)
 load_dotenv()
 
 #Configuring the SQL db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fitness.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
@@ -26,7 +26,7 @@ jwt = JWTManager(app)
 
 db = SQLAlchemy(app)
 
-DATABASE = '/C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite'
+DATABASE = os.path.join(os.path.dirname(__file__), 'fitness.sqlite')
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -54,7 +54,7 @@ def login():
 # endpoint to get all users
 @app.route('/users', methods=['GET'])
 def get_users():
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users')
     users = cursor.fetchall()
@@ -65,7 +65,7 @@ def get_users():
 # endpoint to get a user by ID
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM users WHERE users_id = ?', (user_id,))
     user = cursor.fetchone()
@@ -85,7 +85,7 @@ def create_user():
     name = data['name']
     email = data['email']
     password = data['password']
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO users (users_name, users_email, users_password) VALUES (?, ?, ?)', (name, email, password))
     conn.commit()
@@ -100,7 +100,7 @@ def update_user(user_id):
     name = data['name']
     email = data['email']
     password = data['password']
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('UPDATE users SET users_name = ?, users_email = ?, users_password = ? WHERE users_id = ?', (name, email, password, user_id))
     conn.commit()
@@ -111,7 +111,7 @@ def update_user(user_id):
 # endpoint to delete user
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM users WHERE users_id = ?', (user_id,))
     conn.commit()
@@ -123,7 +123,7 @@ def delete_user(user_id):
 # endpoint to get a day by ID
 @app.route('/days/<int:day_id>', methods=['GET'])
 def get_day(day_id):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM days WHERE days_id = ?', (day_id,))
     day = cursor.fetchone()
@@ -139,7 +139,7 @@ def get_day(day_id):
 # endpoint to get all days names
 @app.route('/days', methods=['GET'])
 def get_days():
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT days_name FROM days')
     days = cursor.fetchall()
@@ -151,7 +151,7 @@ def get_days():
 # endpoint to get all exercises names
 @app.route('/exercises', methods=['GET'])
 def get_exercises():
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT exercises_name FROM exercises')
     exercises = cursor.fetchall()
@@ -163,7 +163,7 @@ def get_exercises():
 # endpoint to get an exercise by ID
 @app.route('/exercises/<int:exercise_id>', methods=['GET'])
 def get_exercise(exercise_id):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM exercises WHERE exercises_id = ?', (exercise_id,))
     exercise = cursor.fetchone()
@@ -186,7 +186,7 @@ def create_training():
     exercise1 = data['exercise1']
     exercise2 = data['exercise2']
     exercise3 = data['exercise3']
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('INSERT INTO training (training_day_name, training_user_name, training_exercise1, training_exercise2, training_exercise3) VALUES (?, ?, ?, ?, ?)', (day, user, exercise1, exercise2, exercise3))
     conn.commit()
@@ -198,7 +198,7 @@ def create_training():
 # endpoint to retrieve training data
 @app.route('/user/<username>/training', methods=['GET'])
 def get_training(username):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('SELECT training_day_name, training_exercise1, training_exercise2, training_exercise3 FROM training WHERE training_user_name = ?', (username,))
     training_data = cursor.fetchall()
@@ -217,7 +217,7 @@ def update_training(user):
     exercise1 = data['exercise1']
     exercise2 = data['exercise2']
     exercise3 = data['exercise3']
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('UPDATE training SET training_exercise1 = ?, training_exercise2 = ?, training_exercise3 = ? WHERE training_user_name = ? AND training_day_name = ?', (exercise1, exercise2, exercise3, user, day))
     conn.commit()
@@ -229,7 +229,7 @@ def update_training(user):
 # endpoint to delete training data
 @app.route('/user/<username>/training_delete', methods=['DELETE'])
 def delete_training(username):
-    conn = sqlite3.connect('C:/Users/ainho\OneDrive/Documentos/Formación/Developers from Euskadi/__Full Stack/fitness-app/db/fitness.sqlite')
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('DELETE FROM training WHERE training_user_name = ?', (username,))
     conn.commit()
