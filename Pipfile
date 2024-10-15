@@ -11,6 +11,7 @@ marshmallow-sqlalchemy = "*"
 flask-jwt-extended = "*"
 python-dotenv = "*"
 flask-cors = "*"
+gunicorn = "*"
 
 [dev-packages]
 
