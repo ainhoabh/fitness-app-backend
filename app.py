@@ -29,9 +29,10 @@ db = SQLAlchemy(app)
 DATABASE = os.path.join(os.path.dirname(__file__), 'fitness.sqlite')
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    db = sqlite3.connect(DATABASE)
+    db.execute("PRAGMA foreign_keys = ON")
+    db.row_factory = sqlite3.Row
+    return db
 
 
 # endpoint to authenticate users and return JWTs
