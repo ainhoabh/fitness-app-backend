@@ -35,7 +35,7 @@ def get_db_connection():
     return db
 
 
-# endpoint to authenticate users and return JWTs
+# 1. endpoint to authenticate users and return JWTs
 @app.route("/login", methods=["POST"])
 def login():
     username = request.json.get("username", None)
@@ -51,93 +51,7 @@ def login():
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token)
 
-
-# endpoint to get all users
-@app.route('/users', methods=['GET'])
-def get_users():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users')
-    users = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(users)
-
-# endpoint to get a user by ID
-@app.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE users_id = ?', (user_id,))
-    user = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
-    if user:
-        return jsonify(user)
-    else:
-        return jsonify({'message': 'The user does not exist.'}), 404
-
-
-# endpoint to create new user
-@app.route('/users', methods=['POST'])
-def create_user():
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    password = data['password']
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO users (users_name, users_email, users_password) VALUES (?, ?, ?)', (name, email, password))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return jsonify({'message': 'The user has been created.'})
-
-# endpoint to update user
-@app.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    password = data['password']
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('UPDATE users SET users_name = ?, users_email = ?, users_password = ? WHERE users_id = ?', (name, email, password, user_id))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return jsonify({'message': 'The user has been updated.'})
-
-# endpoint to delete user
-@app.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM users WHERE users_id = ?', (user_id,))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return jsonify({'message': 'The user has been deleted.'})
-
-
-# endpoint to get a day by ID
-@app.route('/days/<int:day_id>', methods=['GET'])
-def get_day(day_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM days WHERE days_id = ?', (day_id,))
-    day = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
-    if day:
-        return jsonify(day)
-    else:
-        return jsonify({'message': 'The day does not exist.'}), 404
-    
-
-# endpoint to get all days names
+# 2. endpoint to get all days names
 @app.route('/days', methods=['GET'])
 def get_days():
     conn = get_db_connection()
@@ -149,7 +63,7 @@ def get_days():
     return jsonify(days)
     
 
-# endpoint to get all exercises names
+# 3. endpoint to get all exercises names
 @app.route('/exercises', methods=['GET'])
 def get_exercises():
     conn = get_db_connection()
@@ -161,23 +75,7 @@ def get_exercises():
     return jsonify(exercises)
     
 
-# endpoint to get an exercise by ID
-@app.route('/exercises/<int:exercise_id>', methods=['GET'])
-def get_exercise(exercise_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM exercises WHERE exercises_id = ?', (exercise_id,))
-    exercise = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
-    if exercise:
-        return jsonify(exercise)
-    else:
-        return jsonify({'message': 'The exercise does not exist.'}), 404
-    
-
-# endpoint to create a training
+# 4. endpoint to create a training
 @app.route('/training', methods=['POST'])
 def create_training():
     data = request.get_json()
@@ -196,7 +94,7 @@ def create_training():
     return jsonify({'message': 'The training has been created.'})
 
 
-# endpoint to retrieve training data
+# 5. endpoint to retrieve training data
 @app.route('/user/<username>/training', methods=['GET'])
 def get_training(username):
     conn = get_db_connection()
@@ -208,7 +106,7 @@ def get_training(username):
     return jsonify(training_data)
 
 
-# endpoint to update training data
+# 6. endpoint to update training data
 @app.route('/user/<user>/training', methods=['PUT'])
 def update_training(user):
     data = request.get_json()
@@ -227,7 +125,7 @@ def update_training(user):
     return jsonify({'message': 'The training has been updated.'})
     
 
-# endpoint to delete training data
+# 7. endpoint to delete training data
 @app.route('/user/<username>/training_delete', methods=['DELETE'])
 def delete_training(username):
     conn = get_db_connection()
