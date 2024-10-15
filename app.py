@@ -21,7 +21,7 @@ load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fitness.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET')
 jwt = JWTManager(app)
 
 db = SQLAlchemy(app)
