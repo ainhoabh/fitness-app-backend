@@ -96,7 +96,7 @@ def get_training(username):
 def update_training(user):
     data = request.get_json()
     day = data['day']
-    # user = data['user']
+    user = data['user']
     exercise1 = data['exercise1']
     exercise2 = data['exercise2']
     exercise3 = data['exercise3']
