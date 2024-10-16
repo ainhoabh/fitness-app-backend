@@ -2,3 +2,4 @@
 .env.test
 backup_app.py
 fitness.sqlite
+db.dump
