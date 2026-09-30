@@ -3,4 +3,4 @@
 backup_app.py
 fitness.sqlite
 db.dump
-requirements.txt
+old/
