@@ -80,7 +80,7 @@ def create_training():
     )
     db.session.add(new_training)
     db.session.commit()
-    return jsonify({'message': 'The training has been created.'})
+    return jsonify({'message': 'The training has been created!'})
 
 
 # 5. endpoint to retrieve training data
